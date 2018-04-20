@@ -1,3 +1,4 @@
+var rpi = require('../../device');
 var express = require('express');
 var router = express.Router({caseSensitive: true});
 var async = require('async');
