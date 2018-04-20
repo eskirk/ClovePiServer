@@ -3,9 +3,11 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
+var port = 4200;
 
 var deviceRouter = require('./routes/Device/Device');
 var usersRouter = require('./routes/Users/Users');
+var baseRouter = require('./routes/index');
 
 var app = express();
 
@@ -21,6 +23,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/Device', deviceRouter);
 app.use('/Users', usersRouter);
+app.use('/', baseRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -37,5 +40,7 @@ app.use(function(err, req, res, next) {
   res.status(err.status || 500);
   res.render('error');
 });
+
+app.listen(port, () => console.log(`Listening on port ${port}`));
 
 module.exports = app;

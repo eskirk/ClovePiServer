@@ -1,5 +1,5 @@
-var Express = require('express');
-var router = Express.router({caseSensitive: true});
+var express = require('express');
+var router = express.Router({caseSensitive: true});
 var async = require('async');
 
 router.baseUrl = '/Users';
@@ -13,3 +13,5 @@ router.get('/', (req, res) => {
 router.get('/{id}', (req, res) => {
    res.send('{infoAboutUser}');
 });
+
+module.exports = router;
