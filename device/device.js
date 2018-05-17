@@ -9,12 +9,12 @@ const pressureSwitch = new Gpio(25, 'in');
 
 // 18 hours in milliseconds
 // const LIGHT_DURATION = 6480000000;
-const LIGHT_DURATION = 300000;
+const LIGHT_DURATION = 150000;
 // 6 hours in milliseconds
 // const LIGHT_OFF_DURATION = 2160000000;
-const LIGHT_OFF_DURATION = 300000;
+const LIGHT_OFF_DURATION = 150000;
 
-const WATER_PAUSE = 300000;
+const WATER_PAUSE = 10000;
 
 
 var device = {};
