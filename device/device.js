@@ -7,6 +7,12 @@ const fan = new Gpio(23, 'out');
 const lights = new Gpio(24, 'out');
 const pressureSwitch = new Gpio(25, 'in');
 
+// 18 hours in milliseconds
+const LIGHT_DURATION = 6480000000;
+// 6 hours in milliseconds
+const LIGHT_OFF_DURATION = 2160000000;
+
+
 var device = {};
 
 device.name = "Homegrown Homedevice";
@@ -23,8 +29,8 @@ device.stats = {
  * * Initial device condition
  */
 device.on = function() {
-   device.fanOn();
-   device.lightsOn();
+   this.fanOn();
+   this.lightsOn();
 }
 
 /**
@@ -36,10 +42,10 @@ device.off = function() {
    pump.writeSync(0);
    console.log("Device subsystems powering off");
 
-   device.stats.pressurizing = false;
-   device.stats.depressurizing = false;
-   device.stats.lights = false;
-   device.stats.fan = false;
+   this.stats.pressurizing = false;
+   this.stats.depressurizing = false;
+   this.stats.lights = false;
+   this.stats.fan = false;
 }
 
 /**
@@ -51,8 +57,8 @@ device.pressurize = function() {
    pump.writeSync(1);
    console.log("Device pressurizing");
 
-   device.stats.pressurizing = true;
-   device.stats.depressurizing = false;
+   this.stats.pressurizing = true;
+   this.stats.depressurizing = false;
 }
 
 /**
@@ -64,9 +70,9 @@ device.depressurize = function() {
    valve2.writeSync(1);
    console.log("Device depressurizing");
 
-   device.stats.depressurizing = true;
-   device.stats.pressurizing = false;
-   device.stats.pressurized = false;
+   this.stats.depressurizing = true;
+   this.stats.pressurizing = false;
+   this.stats.pressurized = false;
 }
 
 /**
@@ -88,7 +94,7 @@ device.waterPlants = function() {
 /**
  * * Burst water the plants for 30 seconds
  */
-device.burstWater = function() {
+device.deviceLoop = function() {
    var cycles = 10;
 
    while (cycles--) {
@@ -106,10 +112,27 @@ device.burstWater = function() {
       valve2.writeSync(0);
       pump.writeSync(0);
 
-      // wait 5 seconds without watering the plants
-      sleep(5000);
+      // wait 5 minutes without watering the plants
+      sleep(300000);
       console.log('watering plants');
+      this.queryLights();
    }
+}
+
+/**
+ * * Query the lights to see if they need to be turned on or off
+ */
+device.queryLights = function() {
+   // if the lights are on and they have been on for longer than the duration
+   // turn em off
+   if (this.stats.lights) 
+      if (new Date().getTime() >= this.lightsStart + LIGHT_DURATION)
+         this.lightsOff();
+   // if the lights are off and they have been off for longer than the duration
+   // turn em on
+   else if (!this.stats.lights)
+      if (new Date().getTime() >= this.lightsOffStart + LIGHT_OFF_DURATION)
+         this.lightsOn();
 }
 
 /**
@@ -129,7 +152,7 @@ device.fanOff = function() {
    fan.writeSync(0);
    console.log("Fans off");
    
-   device.stats.fan = false;
+   this.stats.fan = false;
 }
 
 /**
@@ -137,9 +160,12 @@ device.fanOff = function() {
  */
 device.lightsOn = function() {
    lights.writeSync(1);
-   console.log("Lights on");
 
-   device.stats.lights = true;
+   this.stats.lights = true;
+   this.stats.lightsOffStart = null;
+   this.stats.lightsStart = new Date().getTime();
+
+   console.log("Lights on, started at " + this.stats.lightsStart);
 }
 
 /**
@@ -147,9 +173,12 @@ device.lightsOn = function() {
  */
 device.lightsOff = function() {
    lights.writeSync(0);
-   console.log("Lights off");
 
-   device.stats.lights = false;
+   this.stats.lights = false;
+   this.stats.lightsStart = null;
+   this.stats.lightsOffStart = new Date().getTime();
+
+   console.log("Lights off at " + this.stats.lightsOffStart);
 }
 
 /**
@@ -169,6 +198,7 @@ device.readPressure = function() {
 
    return pressurized;
 }
+
 
 // sleep function for the burst water delay
 function sleep(delay) {
