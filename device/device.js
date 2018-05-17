@@ -72,7 +72,7 @@ device.waterPlants = function() {
 
    device.stats.pressurized = false;
 
-   while (this.readPressure() != 0) {}
+   while (!this.readPressure()) {}
    console.log("device below operating pressure");
    this.off();
 }
