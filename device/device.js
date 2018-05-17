@@ -5,7 +5,7 @@ const valve2 = new Gpio(27, 'out');
 const pump = new Gpio(18, 'out');
 const fan = new Gpio(23, 'out');
 const lights = new Gpio(24, 'out');
-const pressureSwitch = Gpio(25, 'in');
+const pressureSwitch = new Gpio(25, 'in');
 
 var device = {};
 
@@ -57,6 +57,16 @@ device.depressurize = function() {
 
    device.stats.depressurizing = true;
    device.stats.pressurizing = false;
+}
+
+/**
+ * * Open valve two and water them plants
+ */
+device.waterPlants = function() {
+   valve1.writeSync(0);
+   valve2.writeSync(1);
+   pump.writeSync(0);
+   console.log("Watering plants");
 }
 
 /**
