@@ -6,32 +6,56 @@ const device = require('../../device/device');
 
 router.baseUrl = '/Device';
 
-// route: /Device
+// route: {{url}}/Device
 router.get('/', (req, res) => {
    res.send(device.name);
 });
 
-// route: /Device/stats
+// route: {{url}}/Device/stats
 router.get('/stats', (req, res) => {
    res.send(device.stats);
 });
 
-// route: /Device/off
+// route: {{url}}/Device/off
 router.put('/off', (req, res) => {
    device.off();
    res.send('device powering off');
 });
 
-// route: /Device/pressurize
+// route: {{url}}/Device/pressurize
 router.put('/pressurize', (req, res) => {
    device.pressurize();
    res.send('device pressurizing');
 });
 
-// route: /Device/depressurize
+// route: {{url}}/Device/depressurize
 router.put('/pressurize', (req, res) => {
    device.depressurize();
    res.send('device depressurizing');
+});
+
+// route: {{url}}/Device/lights/on
+router.put('/lights/on', (req, res) => {
+   device.lightsOn();
+   res.send('lights on');
+});
+
+// route: {{url}}/Device/lights/off
+router.put('/lights/off', (req, res) => {
+   device.lightsOff();
+   res.send('lights off');
+});
+
+// route: {{url}}/Device/fan/on
+router.put('/fan/on', (req, res) => {
+   device.fanOn();
+   res.send('fans on');
+});
+
+// route: {{url}}/Device/fan/off
+router.put('/fan/off', (req, res) => {
+   device.fanOff();
+   res.send('fans off');
 });
 
 module.exports = router;
