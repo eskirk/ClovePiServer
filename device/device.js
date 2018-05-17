@@ -20,6 +20,14 @@ device.stats = {
 };
 
 /**
+ * * Initial device condition
+ */
+device.on = function() {
+   device.fanOn();
+   device.lightsOn();
+}
+
+/**
  * * Power the device off
  */
 device.off = function() {

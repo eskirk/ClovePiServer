@@ -9,6 +9,8 @@ var deviceRouter = require('./routes/Device/Device');
 var usersRouter = require('./routes/Users/Users');
 var baseRouter = require('./routes/index');
 
+var device = require('./device/device');
+
 var app = express();
 
 // view engine setup
@@ -40,6 +42,9 @@ app.use(function(err, req, res, next) {
   res.status(err.status || 500);
   res.render('error');
 });
+
+// turn the device's fans and lights on
+device.on();
 
 app.listen(port, () => console.log(`Listening on port ${port}`));
 
