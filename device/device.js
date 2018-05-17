@@ -14,6 +14,7 @@ device.name = "Homegrown Homedevice";
 device.stats = {
    pressurizing: false,
    depressurizing: false,
+   pressurized: false,
    lights: false,
    fan: false
 };
@@ -57,6 +58,7 @@ device.depressurize = function() {
 
    device.stats.depressurizing = true;
    device.stats.pressurizing = false;
+   device.stats.pressurized = false;
 }
 
 /**
@@ -67,6 +69,8 @@ device.waterPlants = function() {
    valve2.writeSync(1);
    pump.writeSync(0);
    console.log("Watering plants");
+
+   device.stats.pressurized = false;
 }
 
 /**
@@ -108,5 +112,24 @@ device.lightsOff = function() {
 
    device.stats.lights = false;
 }
+
+/**
+ * * Read from the pressure switch and set the device stats accordingly
+ */
+device.readPressure = function() {
+   var pressurized = pressureSwitch.readSync();
+
+   if (pressurized) {
+      this.stats.pressurized = true;
+      console.log("device pressurized");
+   }
+   else {
+      this.stats.pressurized = false;
+      console.log("device not pressurized");
+   }
+
+   return pressurized;
+}
+
 
 module.exports = device;

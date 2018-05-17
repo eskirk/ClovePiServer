@@ -16,6 +16,11 @@ router.get('/stats', (req, res) => {
    res.send(device.stats);
 });
 
+// route: {{url}}/Device/pressure/status
+router.get('/pressure/status', (req, res) => {
+   res.send(device.readPressure());
+});
+
 // route: {{url}}/Device/off
 router.put('/off', (req, res) => {
    device.off();
