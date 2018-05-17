@@ -100,6 +100,7 @@ device.burstWater = function() {
 
       // wait 3 seconds while watering the plants
       setTimeout(() => {
+         console.log('watering finished');
          this.watering = false;
       }, 3000);
 
@@ -113,6 +114,7 @@ device.burstWater = function() {
 
       // wait 5 seconds without watering the plants
       setTimeout(() => {
+         console.log('watering plants');
          this.watering = true;
       }, 5000);
 
