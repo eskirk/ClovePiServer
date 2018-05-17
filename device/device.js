@@ -8,9 +8,13 @@ const lights = new Gpio(24, 'out');
 const pressureSwitch = new Gpio(25, 'in');
 
 // 18 hours in milliseconds
-const LIGHT_DURATION = 6480000000;
+// const LIGHT_DURATION = 6480000000;
+const LIGHT_DURATION = 300000;
 // 6 hours in milliseconds
-const LIGHT_OFF_DURATION = 2160000000;
+// const LIGHT_OFF_DURATION = 2160000000;
+const LIGHT_OFF_DURATION = 300000;
+
+const WATER_PAUSE = 300000;
 
 
 var device = {};
@@ -113,7 +117,7 @@ device.deviceLoop = function() {
       pump.writeSync(0);
 
       // wait 5 minutes without watering the plants
-      sleep(300000);
+      sleep(WATER_PAUSE);
       console.log('watering plants');
       this.queryLights();
    }

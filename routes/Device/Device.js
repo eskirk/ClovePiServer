@@ -48,7 +48,7 @@ router.put('/water', (req, res) => {
 
 // route: {{url}}/Device/burstWater
 router.put('/deviceLoop', (req, res) => {
-   device.burstWater();
+   device.deviceLoop();
    res.send('device loop over');
 });
 
