@@ -86,6 +86,42 @@ device.waterPlants = function() {
 }
 
 /**
+ * * Burst water the plants for 30 seconds
+ */
+device.burstWater = function() {
+   var cycles = 10;
+   var watering = true;
+
+   while (cycles--) {
+      // water plants
+      valve1.writeSync(0);
+      valve2.writeSync(1);
+      pump.writeSync(0);
+
+      // wait 3 seconds while watering the plants
+      setTimeout(() => {
+         watering = false;
+      }, 3000);
+
+      // spin loop while watering 
+      while (watering) {}
+
+      // stop watering plants
+      valve1.writeSync(0);
+      valve2.writeSync(0);
+      pump.writeSync(0);
+
+      // wait 5 seconds without watering the plants
+      setTimeout(() => {
+         watering = true;
+      }, 5000);
+
+      // spin loop while waiting
+      while (!watering) {}
+   }
+}
+
+/**
  * * Turn the fans on
  */
 device.fanOn = function() {
