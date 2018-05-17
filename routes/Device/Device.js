@@ -18,7 +18,8 @@ router.get('/stats', (req, res) => {
 
 // route: {{url}}/Device/pressure/status
 router.get('/pressure/status', (req, res) => {
-   res.send(device.readPressure());
+   device.readPressure();
+   res.send(device.stats.pressurized);
 });
 
 // route: {{url}}/Device/off
