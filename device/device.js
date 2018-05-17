@@ -89,23 +89,17 @@ device.waterPlants = function() {
  * * Burst water the plants for 30 seconds
  */
 device.burstWater = function() {
-   this.cycles = 10;
-   this.watering = true;
+   var cycles = 10;
 
-   while (this.cycles--) {
+   while (cycles--) {
       // water plants
       valve1.writeSync(0);
       valve2.writeSync(1);
       pump.writeSync(0);
 
       // wait 3 seconds while watering the plants
-      setTimeout(() => {
-         console.log('watering finished');
-         this.watering = false;
-      }, 3000);
-
-      // spin loop while watering 
-      while (this.watering) {}
+      sleep(3000);
+      console.log('done watering plants');
 
       // stop watering plants
       valve1.writeSync(0);
@@ -113,13 +107,8 @@ device.burstWater = function() {
       pump.writeSync(0);
 
       // wait 5 seconds without watering the plants
-      setTimeout(() => {
-         console.log('watering plants');
-         this.watering = true;
-      }, 5000);
-
-      // spin loop while waiting
-      while (!this.watering) {}
+      sleep(5000);
+      console.log('watering plants');
    }
 }
 
@@ -181,5 +170,10 @@ device.readPressure = function() {
    return pressurized;
 }
 
+// sleep function for the burst water delay
+function sleep(delay) {
+   var start = new Date().getTime();
+   while (new Date().getTime() < start + delay);
+}
 
 module.exports = device;
