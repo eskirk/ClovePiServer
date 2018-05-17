@@ -40,9 +40,16 @@ router.put('/depressurize', (req, res) => {
    res.send('device depressurizing');
 });
 
+// route: {{url}}/Device/water
 router.put('/water', (req, res) => {
    device.waterPlants();
    res.send('watering plants');
+});
+
+// route: {{url}}/Device/burstWater
+router.put('/burstWater', (req, res) => {
+   device.burstWater();
+   res.send('burst watering plants');
 });
 
 // route: {{url}}/Device/lights/on
