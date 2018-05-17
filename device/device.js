@@ -89,10 +89,10 @@ device.waterPlants = function() {
  * * Burst water the plants for 30 seconds
  */
 device.burstWater = function() {
-   var cycles = 10;
-   var watering = true;
+   this.cycles = 10;
+   this.watering = true;
 
-   while (cycles--) {
+   while (this.cycles--) {
       // water plants
       valve1.writeSync(0);
       valve2.writeSync(1);
@@ -100,11 +100,11 @@ device.burstWater = function() {
 
       // wait 3 seconds while watering the plants
       setTimeout(() => {
-         watering = false;
+         this.watering = false;
       }, 3000);
 
       // spin loop while watering 
-      while (watering) {}
+      while (this.watering) {}
 
       // stop watering plants
       valve1.writeSync(0);
@@ -113,11 +113,11 @@ device.burstWater = function() {
 
       // wait 5 seconds without watering the plants
       setTimeout(() => {
-         watering = true;
+         this.watering = true;
       }, 5000);
 
       // spin loop while waiting
-      while (!watering) {}
+      while (!this.watering) {}
    }
 }
 
