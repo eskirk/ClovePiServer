@@ -10,6 +10,15 @@ const pump = new Gpio(18, 'out');
 
 var device = {};
 
+device.name = "Homegrown Homedevice";
+
+device.stats = {
+   pressurizing: false,
+   depressurizing: false,
+   lights: false,
+   fan: false
+};
+
 /**
  * * Power the device off
  */
@@ -17,7 +26,12 @@ device.off = function() {
    valve1.writeSync(0);
    valve2.writeSync(0);
    pump.writeSync(0);
-   console.log("Device powering off");
+   console.log("Device subsystems powering off");
+
+   device.stats.pressurizing = false;
+   device.stats.depressurizing = false;
+   device.stats.lights = false;
+   device.stats.fan = false;
 }
 
 /**
@@ -28,6 +42,9 @@ device.pressurize = function() {
    valve2.writeSync(0);
    pump.writeSync(1);
    console.log("Device pressurizing");
+
+   device.stats.pressurizing = true;
+   device.stats.depressurizing = false;
 }
 
 /**
@@ -38,6 +55,9 @@ device.depressurize = function() {
    pump.writeSync(0);
    valve2.writeSync(1);
    console.log(result.command);
+
+   device.stats.depressurizing = true;
+   device.stats.pressurizing = false;
 }
 
 module.exports = device;
