@@ -71,6 +71,10 @@ device.waterPlants = function() {
    console.log("Watering plants");
 
    device.stats.pressurized = false;
+
+   while (this.readPressure() != 0) {}
+   console.log("device below operating pressure");
+   this.off();
 }
 
 /**
@@ -119,7 +123,7 @@ device.lightsOff = function() {
 device.readPressure = function() {
    var pressurized = pressureSwitch.readSync();
 
-   if (pressurized) {
+   if (!pressurized) {
       this.stats.pressurized = true;
       console.log("device pressurized");
    }
