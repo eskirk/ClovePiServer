@@ -133,6 +133,7 @@ device.deviceLoop = function() {
 device.queryLights = function() {
    console.log('querying lights');
    console.log(this.stats);
+   console.log(this.stats.lights);
 
    // if the lights are on and they have been on for longer than the duration
    // turn em off
