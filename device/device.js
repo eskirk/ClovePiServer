@@ -8,14 +8,13 @@ const lights = new Gpio(24, 'out');
 const pressureSwitch = new Gpio(25, 'in');
 
 // 18 hours in milliseconds
-// const LIGHT_DURATION = 6480000000;
-const LIGHT_DURATION = 15000;
+const LIGHT_DURATION = 64800000;
 // 6 hours in milliseconds
-// const LIGHT_OFF_DURATION = 2160000000;
-const LIGHT_OFF_DURATION = 15000;
-
-const WATER_PAUSE = 10000;
-
+const LIGHT_OFF_DURATION = 21600000;
+// 5 minutes in milliseconds
+const WATER_PAUSE = 300000;
+// 15 seconds in milliseconds
+const PRESSURIZE_PAUSE = 15000;
 
 var device = {};
 
@@ -63,6 +62,7 @@ device.pressurize = function() {
 
    this.stats.pressurizing = true;
    this.stats.depressurizing = false;
+   sleep(PRESSURIZE_PAUSE);
 }
 
 /**
@@ -101,11 +101,16 @@ device.waterPlants = function() {
 device.deviceLoop = function() {
    // pressurize for 15 seconds
    this.pressurize();
-   sleep(15000);
 
    var cycles = 10;
 
-   while (cycles--) {
+   while (true) {
+      // if we have gone 10 cycles, repressurize the system
+      if (cycles <= 0) {
+         this.pressurize();
+         cycles = 10;
+      }
+
       // water plants
       valve1.writeSync(0);
       valve2.writeSync(1);
@@ -124,6 +129,7 @@ device.deviceLoop = function() {
       sleep(WATER_PAUSE);
       console.log('watering plants');
       this.queryLights();
+      cycles--;
    }
 }
 
