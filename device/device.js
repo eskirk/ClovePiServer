@@ -12,9 +12,12 @@ const LIGHT_DURATION = 64800000;
 // 6 hours in milliseconds
 const LIGHT_OFF_DURATION = 21600000;
 // 5 minutes in milliseconds
-const WATER_PAUSE = 300000;
+// const WATER_PAUSE = 300000;
+const WATER_PAUSE = 15000;
 // 15 seconds in milliseconds
 const PRESSURIZE_PAUSE = 15000;
+// 3 seconds in milliseconds
+const WATERING_TIME = 3000;
 
 var device = {};
 
@@ -94,14 +97,20 @@ device.waterPlants = function() {
    console.log("Watering plants");
 
    device.stats.pressurized = false;
-
-   while (!this.readPressure()) {}
-   console.log("device below operating pressure");
-   this.off();
 }
 
 /**
- * * Burst water the plants for 30 seconds
+ * * Close all valves, stop the pump, stop watering them plants
+ */
+device.stopWatering = function() {
+   valve1.writeSync(0);
+   valve2.writeSync(0);
+   pump.writeSync(0);
+   console.log("Stopped watering plants");
+}
+
+/**
+ * * Run the device loop, water the plants, monitor lights, etc.
  */
 device.deviceLoop = function() {
    // pressurize for 15 seconds
@@ -110,31 +119,29 @@ device.deviceLoop = function() {
    var cycles = 10;
 
    while (true) {
+      console.log('plants watered - ' + cycles + ' waterings left in this cycle');
+
       // if we have gone 10 cycles, repressurize the system
-      if (cycles <= 0) {
+      if (cycles == 0) {
          this.pressurize();
          cycles = 10;
       }
 
       // water plants
-      valve1.writeSync(0);
-      valve2.writeSync(1);
-      pump.writeSync(0);
+      this.waterPlants();
 
       // wait 3 seconds while watering the plants
-      sleep(3000);
+      sleep(WATERING_TIME);
       console.log('done watering plants at ' + new Date());
 
       // stop watering plants
-      valve1.writeSync(0);
-      valve2.writeSync(0);
-      pump.writeSync(0);
+      this.stopWatering();
 
       // wait 5 minutes without watering the plants
       sleep(WATER_PAUSE);
       console.log('watering plants at ' + new Date());
       this.queryLights();
-      cycles--;
+      cycles = cycles - 1;
    }
 }
 
@@ -149,7 +156,7 @@ device.queryLights = function() {
    // turn em off
    if (this.stats.lights) {
       console.log("NOW: " + new Date().getTime());
-      console.log("END: " + Number(this.stats.lightsStart + LIGHT_DURATION))
+      console.log("END: " + Number(this.stats.lightsStart + LIGHT_DURATION));
       if (new Date().getTime() >= this.stats.lightsStart + LIGHT_DURATION)
          this.lightsOff();
    }
@@ -157,7 +164,7 @@ device.queryLights = function() {
    // turn em on
    else {
       console.log("NOW: " + new Date().getTime());
-      console.log("END: " + Number(this.stats.lightsOffStart + LIGHT_OFF_DURATION))
+      console.log("END: " + Number(this.stats.lightsOffStart + LIGHT_OFF_DURATION));
       if (new Date().getTime() >= this.stats.lightsOffStart + LIGHT_OFF_DURATION)
          this.lightsOn();
    }
@@ -226,6 +233,8 @@ device.readPressure = function() {
 
    return pressurized;
 }
+
+device.waterPlants
 
 
 // sleep function for the burst water delay
