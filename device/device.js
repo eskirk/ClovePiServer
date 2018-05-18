@@ -12,8 +12,7 @@ const LIGHT_DURATION = 64800000;
 // 6 hours in milliseconds
 const LIGHT_OFF_DURATION = 21600000;
 // 5 minutes in milliseconds
-// const WATER_PAUSE = 300000;
-const WATER_PAUSE = 15000;
+const WATER_PAUSE = 300000;
 // 15 seconds in milliseconds
 const PRESSURIZE_PAUSE = 15000;
 // 3 seconds in milliseconds
@@ -21,7 +20,7 @@ const WATERING_TIME = 3000;
 
 var device = {};
 
-device.name = "Homegrown Homedevice";
+device.name = 'Homegrown Homedevice';
 
 device.stats = {
    pressurizing: false,
@@ -51,7 +50,7 @@ device.off = function() {
    valve1.writeSync(0);
    valve2.writeSync(0);
    pump.writeSync(0);
-   console.log("Device subsystems powering off");
+   console.log('Device subsystems powering off');
 
    this.stats.pressurizing = false;
    this.stats.depressurizing = false;
@@ -66,7 +65,7 @@ device.pressurize = function() {
    valve1.writeSync(1);
    valve2.writeSync(0);
    pump.writeSync(1);
-   console.log("Device pressurizing");
+   console.log('Device pressurizing');
 
    this.stats.pressurizing = true;
    this.stats.depressurizing = false;
@@ -80,7 +79,7 @@ device.depressurize = function() {
    valve1.writeSync(1);
    pump.writeSync(0);
    valve2.writeSync(1);
-   console.log("Device depressurizing");
+   console.log('Device depressurizing');
 
    this.stats.depressurizing = true;
    this.stats.pressurizing = false;
@@ -94,7 +93,7 @@ device.waterPlants = function() {
    valve1.writeSync(0);
    valve2.writeSync(1);
    pump.writeSync(0);
-   console.log("Watering plants");
+   console.log('Watering plants at ' + new Date());
 
    device.stats.pressurized = false;
 }
@@ -106,7 +105,7 @@ device.stopWatering = function() {
    valve1.writeSync(0);
    valve2.writeSync(0);
    pump.writeSync(0);
-   console.log("Stopped watering plants");
+   console.log('Stopped watering plants at ' + new Date());
 }
 
 /**
@@ -119,7 +118,7 @@ device.deviceLoop = function() {
    var cycles = 10;
 
    while (true) {
-      console.log('plants watered - ' + cycles + ' waterings left in this cycle');
+      console.log('\nplants watered - ' + cycles + ' waterings left in this cycle\n');
 
       // if we have gone 10 cycles, repressurize the system
       if (cycles == 0) {
@@ -155,16 +154,16 @@ device.queryLights = function() {
    // if the lights are on and they have been on for longer than the duration
    // turn em off
    if (this.stats.lights) {
-      console.log("NOW: " + new Date().getTime());
-      console.log("END: " + Number(this.stats.lightsStart + LIGHT_DURATION));
+      console.log('NOW: ' + new Date().getTime());
+      console.log('END: ' + Number(this.stats.lightsStart + LIGHT_DURATION));
       if (new Date().getTime() >= this.stats.lightsStart + LIGHT_DURATION)
          this.lightsOff();
    }
    // if the lights are off and they have been off for longer than the duration
    // turn em on
    else {
-      console.log("NOW: " + new Date().getTime());
-      console.log("END: " + Number(this.stats.lightsOffStart + LIGHT_OFF_DURATION));
+      console.log('NOW: ' + new Date().getTime());
+      console.log('END: ' + Number(this.stats.lightsOffStart + LIGHT_OFF_DURATION));
       if (new Date().getTime() >= this.stats.lightsOffStart + LIGHT_OFF_DURATION)
          this.lightsOn();
    }
@@ -175,7 +174,7 @@ device.queryLights = function() {
  */
 device.fanOn = function() {
    fan.writeSync(1);
-   console.log("Fans on");
+   console.log('Fans on');
 
    device.stats.fan = true;
 }
@@ -185,7 +184,7 @@ device.fanOn = function() {
  */
 device.fanOff = function() {
    fan.writeSync(0);
-   console.log("Fans off");
+   console.log('Fans off');
    
    this.stats.fan = false;
 }
@@ -200,7 +199,7 @@ device.lightsOn = function() {
    this.stats.lightsOffStart = null;
    this.stats.lightsStart = new Date().getTime();
 
-   console.log("Lights on at " + this.stats.lightsStart);
+   console.log('Lights on at ' + this.stats.lightsStart);
 }
 
 /**
@@ -213,7 +212,7 @@ device.lightsOff = function() {
    this.stats.lightsStart = null;
    this.stats.lightsOffStart = new Date().getTime();
 
-   console.log("Lights off at " + this.stats.lightsOffStart);
+   console.log('Lights off at ' + this.stats.lightsOffStart);
 }
 
 /**
@@ -224,11 +223,11 @@ device.readPressure = function() {
 
    if (!pressurized) {
       this.stats.pressurized = true;
-      console.log("device pressurized");
+      console.log('device pressurized');
    }
    else {
       this.stats.pressurized = false;
-      console.log("device not pressurized");
+      console.log('device not pressurized');
    }
 
    return pressurized;
