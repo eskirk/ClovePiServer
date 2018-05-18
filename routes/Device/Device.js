@@ -48,8 +48,12 @@ router.put('/water', (req, res) => {
 
 // route: {{url}}/Device/burstWater
 router.put('/deviceLoop', (req, res) => {
-   device.deviceLoop();
-   res.send('device loop over');
+   setTimeout(() => {
+      console.log('device loop starting');
+      device.deviceLoop();
+   }, 5000);
+
+   res.send('device loop engaged');
 });
 
 // route: {{url}}/Device/lights/on
