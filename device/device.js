@@ -136,9 +136,12 @@ device.queryLights = function() {
 
    // if the lights are on and they have been on for longer than the duration
    // turn em off
-   if (this.stats.lights) 
+   if (this.stats.lights) {
+      console.log("NOW: " + new Date().getTime());
+      console.log("END: " + this.lightsStart + LIGHT_DURATION)
       if (new Date().getTime() >= this.lightsStart + LIGHT_DURATION)
          this.lightsOff();
+   }
    // if the lights are off and they have been off for longer than the duration
    // turn em on
    else
