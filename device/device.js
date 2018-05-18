@@ -9,10 +9,10 @@ const pressureSwitch = new Gpio(25, 'in');
 
 // 18 hours in milliseconds
 // const LIGHT_DURATION = 6480000000;
-const LIGHT_DURATION = 150000;
+const LIGHT_DURATION = 15000;
 // 6 hours in milliseconds
 // const LIGHT_OFF_DURATION = 2160000000;
-const LIGHT_OFF_DURATION = 150000;
+const LIGHT_OFF_DURATION = 15000;
 
 const WATER_PAUSE = 10000;
 
@@ -99,6 +99,10 @@ device.waterPlants = function() {
  * * Burst water the plants for 30 seconds
  */
 device.deviceLoop = function() {
+   // pressurize for 15 seconds
+   this.pressurize();
+   sleep(15000);
+
    var cycles = 10;
 
    while (cycles--) {
@@ -127,6 +131,8 @@ device.deviceLoop = function() {
  * * Query the lights to see if they need to be turned on or off
  */
 device.queryLights = function() {
+   console.log('querying lights');
+
    // if the lights are on and they have been on for longer than the duration
    // turn em off
    if (this.stats.lights) 
@@ -134,7 +140,7 @@ device.queryLights = function() {
          this.lightsOff();
    // if the lights are off and they have been off for longer than the duration
    // turn em on
-   else if (!this.stats.lights)
+   else
       if (new Date().getTime() >= this.lightsOffStart + LIGHT_OFF_DURATION)
          this.lightsOn();
 }
