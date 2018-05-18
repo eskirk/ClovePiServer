@@ -118,7 +118,7 @@ device.deviceLoop = function() {
 
       // wait 3 seconds while watering the plants
       sleep(3000);
-      console.log('done watering plants');
+      console.log('done watering plants at ' + new Date());
 
       // stop watering plants
       valve1.writeSync(0);
@@ -127,7 +127,7 @@ device.deviceLoop = function() {
 
       // wait 5 minutes without watering the plants
       sleep(WATER_PAUSE);
-      console.log('watering plants');
+      console.log('watering plants at ' + new Date());
       this.queryLights();
       cycles--;
    }
@@ -137,14 +137,14 @@ device.deviceLoop = function() {
  * * Query the lights to see if they need to be turned on or off
  */
 device.queryLights = function() {
-   console.log('querying lights');
+   console.log('querying lights at ' + new Date());
    console.log(this.stats);
 
    // if the lights are on and they have been on for longer than the duration
    // turn em off
    if (this.stats.lights) {
       console.log("NOW: " + new Date().getTime());
-      console.log("END: " + this.stats.lightsStart + LIGHT_DURATION)
+      console.log("END: " + number(this.stats.lightsStart + LIGHT_DURATION))
       if (new Date().getTime() >= this.stats.lightsStart + LIGHT_DURATION)
          this.lightsOff();
    }
@@ -185,7 +185,7 @@ device.lightsOn = function() {
    this.stats.lightsOffStart = null;
    this.stats.lightsStart = new Date().getTime();
 
-   console.log("Lights on, started at " + this.stats.lightsStart);
+   console.log("Lights on at " + this.stats.lightsStart);
 }
 
 /**

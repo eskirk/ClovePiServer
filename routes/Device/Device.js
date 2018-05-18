@@ -31,19 +31,19 @@ router.put('/off', (req, res) => {
 // route: {{url}}/Device/pressurize
 router.put('/pressurize', (req, res) => {
    device.pressurize();
-   res.send('device pressurizing');
+   res.send('device pressurizing at ' + new Date());
 });
 
 // route: {{url}}/Device/depressurize
 router.put('/depressurize', (req, res) => {
    device.depressurize();
-   res.send('device depressurizing');
+   res.send('device depressurizing at ' + new Date());
 });
 
 // route: {{url}}/Device/water
 router.put('/water', (req, res) => {
    device.waterPlants();
-   res.send('watering plants');
+   res.send('watering plants at ' + new Date());
 });
 
 // route: {{url}}/Device/burstWater
@@ -55,25 +55,25 @@ router.put('/deviceLoop', (req, res) => {
 // route: {{url}}/Device/lights/on
 router.put('/lights/on', (req, res) => {
    device.lightsOn();
-   res.send('lights on');
+   res.send('lights on at ' + new Date());
 });
 
 // route: {{url}}/Device/lights/off
 router.put('/lights/off', (req, res) => {
    device.lightsOff();
-   res.send('lights off');
+   res.send('lights off at ' + new Date());
 });
 
 // route: {{url}}/Device/fan/on
 router.put('/fan/on', (req, res) => {
    device.fanOn();
-   res.send('fans on');
+   res.send('fans on at ' + new Date());
 });
 
 // route: {{url}}/Device/fan/off
 router.put('/fan/off', (req, res) => {
    device.fanOff();
-   res.send('fans off');
+   res.send('fans off at ' + new Date());
 });
 
 module.exports = router;
