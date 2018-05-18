@@ -44,7 +44,7 @@ app.use(function(err, req, res, next) {
 });
 
 // turn the device's fans and lights on
-device.on();
+device.onTest();
 
 app.listen(port, () => console.log(`Listening on port ${port}`));
 

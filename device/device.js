@@ -36,6 +36,11 @@ device.on = function() {
    this.lightsOn();
 }
 
+device.onTest = function() {
+   this.fanOn();
+   this.lightsOff();
+}
+
 /**
  * * Power the device off
  */
@@ -150,9 +155,12 @@ device.queryLights = function() {
    }
    // if the lights are off and they have been off for longer than the duration
    // turn em on
-   else
+   else {
+      console.log("NOW: " + new Date().getTime());
+      console.log("END: " + Number(this.stats.lightsOffStart + LIGHT_OFF_DURATION))
       if (new Date().getTime() >= this.stats.lightsOffStart + LIGHT_OFF_DURATION)
          this.lightsOn();
+   }
 }
 
 /**
