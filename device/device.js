@@ -144,7 +144,7 @@ device.queryLights = function() {
    // turn em off
    if (this.stats.lights) {
       console.log("NOW: " + new Date().getTime());
-      console.log("END: " + number(this.stats.lightsStart + LIGHT_DURATION))
+      console.log("END: " + Number(this.stats.lightsStart + LIGHT_DURATION))
       if (new Date().getTime() >= this.stats.lightsStart + LIGHT_DURATION)
          this.lightsOff();
    }
