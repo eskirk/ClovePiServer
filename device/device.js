@@ -116,7 +116,7 @@ device.deviceLoop = function() {
    // pressurize for 15 seconds
    this.pressurize();
    // set the number of cycles
-   this.cycles = 10;
+   this.cycles = 5;
    // maintain the plants
    this.maintainPlants();
 }
