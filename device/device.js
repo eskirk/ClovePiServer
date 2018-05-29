@@ -36,6 +36,7 @@ device.stats = {
 device.on = function() {
    this.fanOn();
    this.lightsOn();
+   this.deviceLoop();
 }
 
 device.onTest = function() {
@@ -114,33 +115,40 @@ device.stopWatering = function() {
 device.deviceLoop = function() {
    // pressurize for 15 seconds
    this.pressurize();
+   // set the number of cycles
+   this.cycles = 10;
+   // maintain the plants
+   this.maintainPlants();
+}
 
-   var cycles = 10;
-
-   while (true) {
-      console.log('\nplants watered - ' + cycles + ' waterings left in this cycle\n');
-
-      // if we have gone 10 cycles, repressurize the system
-      if (cycles == 0) {
-         this.pressurize();
-         cycles = 10;
-      }
-
+/**
+ * * Maintain the plants - watering cycles and lighting cycles
+ */
+device.maintainPlants = function() {
+   if (this.cycles == 0) {
+      this.deviceLoop();
+   }
+   else if (this.cycles > 0) {
+      console.log('\nwatering plants - ' + this.cycles + ' waterings left in this cycle\n');
       // water plants
       this.waterPlants();
-
-      // wait 3 seconds while watering the plants
-      sleep(WATERING_TIME);
-      console.log('done watering plants at ' + new Date());
-
-      // stop watering plants
-      this.stopWatering();
-
-      // wait 5 minutes without watering the plants
-      sleep(WATER_PAUSE);
       console.log('watering plants at ' + new Date());
-      this.queryLights();
-      cycles = cycles - 1;
+
+      // water the plants for 3 seconds
+      setTimeout(() => {
+         // stop watering plants
+         this.stopWatering();
+         console.log('done watering plants at ' + new Date());
+
+         // check to see if the lights need to be turned on/off
+         this.queryLights();
+         this.cycles = this.cycles - 1;
+
+         // 5 minutes from now, water the plants again
+         setTimeout(() => {
+            this.maintainPlants();
+         }, WATER_PAUSE);
+      }, WATERING_TIME);
    }
 }
 
