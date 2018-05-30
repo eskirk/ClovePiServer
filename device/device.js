@@ -70,7 +70,6 @@ device.pressurize = function() {
 
    this.stats.pressurizing = true;
    this.stats.depressurizing = false;
-   sleep(PRESSURIZE_PAUSE);
 }
 
 /**
@@ -115,10 +114,13 @@ device.stopWatering = function() {
 device.deviceLoop = function() {
    // pressurize for 15 seconds
    this.pressurize();
-   // set the number of cycles
-   this.cycles = 5;
-   // maintain the plants
-   this.maintainPlants();
+
+   setTimeout(() => {
+      // set the number of cycles
+      this.cycles = 5;
+      // maintain the plants
+      this.maintainPlants();
+   }, PRESSURIZE_PAUSE);
 }
 
 /**
@@ -128,7 +130,7 @@ device.maintainPlants = function() {
    if (this.cycles <= 0) {
       this.deviceLoop();
    }
-   else if (this.cycles > 0) {
+   else {
       console.log('\nwatering plants - ' + this.cycles + ' waterings left in this cycle\n');
       // water plants
       this.waterPlants();
@@ -243,11 +245,5 @@ device.readPressure = function() {
 
 device.waterPlants
 
-
-// sleep function for the burst water delay
-function sleep(delay) {
-   var start = new Date().getTime();
-   while (new Date().getTime() < start + delay);
-}
 
 module.exports = device;
