@@ -2,7 +2,7 @@ const Gpio = require('onoff').Gpio;
 
 const valve1 = new Gpio(17, 'out');
 const valve2 = new Gpio(27, 'out');
-const pump = new Gpio(18, 'out');
+const pump = new Gpio(21, 'out');
 const fan = new Gpio(23, 'out');
 const lights = new Gpio(24, 'out');
 const pressureSwitch = new Gpio(25, 'in');
