@@ -122,10 +122,10 @@ device.deviceLoop = function() {
 }
 
 /**
- * * Maintain the plants - watering cycles and lighting cycles
+ * * Maintain the plants - watering cycles and lightiang cycles
  */
 device.maintainPlants = function() {
-   if (this.cycles == 0) {
+   if (this.cycles <= 0) {
       this.deviceLoop();
    }
    else if (this.cycles > 0) {
