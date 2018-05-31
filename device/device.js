@@ -12,7 +12,8 @@ const LIGHT_DURATION = 64800000;
 // 6 hours in milliseconds
 const LIGHT_OFF_DURATION = 21600000;
 // 5 minutes in milliseconds
-const WATER_PAUSE = 300000;
+// const WATER_PAUSE = 300000;
+const WATER_PAUSE = 10000;
 // 15 seconds in milliseconds
 const PRESSURIZE_PAUSE = 15000;
 // 3 seconds in milliseconds
